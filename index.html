@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History Quiz</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz App for Kids</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="app">
-        <h1>History Quiz</h1>
-        
-        <!-- Quiz List -->
-        <div id="quiz-list" class="quiz-list">
-            <!-- Dynamically generated quiz buttons will appear here -->
-        </div>
+  <div id="app">
 
-        <!-- Quiz Container -->
-        <div id="quiz-container" class="quiz-container" style="display: none;">
-            <h2 id="quiz-title"></h2>
-
-            <!-- Progress Bar -->
-            <div id="progress-container" class="progress-container">
-                <div id="progress-bar" class="progress-bar"></div>
-            </div>
-
-            <!-- Question and Answers -->
-            <p id="question" class="question"></p>
-            <div id="answers" class="answers"></div>
-
-            <!-- Feedback and Score -->
-            <p id="feedback" class="feedback"></p>
-            <p id="score" class="score"></p>
-
-            <!-- Navigation Buttons -->
-            <button id="next-button" class="control-button" onclick="nextQuestion()">Next</button>
-            <button id="back-button" class="control-button" onclick="backToMainMenu()" style="display: none;">Back to Main Menu</button>
-        </div>
+    <!-- Main Menu -->
+    <div id="main-menu" class="screen">
+      <h1>✨ Choose a Quiz ✨</h1>
+      <div id="quiz-list"></div>
     </div>
-    <script src="app.js"></script>
+
+    <!-- Name and Class Entry Screen -->
+    <div id="name-class-screen" class="screen hidden">
+      <h2>Enter Your Name and Class (optional)</h2>
+      <input type="text" id="student-name" placeholder="Your Name" />
+      <input type="text" id="student-class" placeholder="Your Class" />
+      <button id="start-btn">Start Quiz</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen hidden">
+      <h2 id="quiz-title"></h2>
+      <div id="question-container">
+        <p id="question-text"></p>
+        <div id="answer-buttons"></div>
+      </div>
+      <div id="feedback" class="hidden"></div>
+    </div>
+
+    <!-- Final Score Screen -->
+    <div id="score-screen" class="screen hidden">
+      <h2>🎉 Quiz Complete! 🎉</h2>
+      <p id="final-score"></p>
+      <button id="retake-btn">🔁 Retake Quiz</button>
+      <button id="menu-btn">🏠 Return to Main Menu</button>
+    </div>
+
+  </div>
+
+  <script src="app.js" defer></script>
 </body>
 </html>

@@ -44,7 +44,6 @@ const quizzes = {
     { q: "What does it mean if someone is 'head of state'?", a: ["They are in charge of a classroom", "They represent the country", "They build houses", "They sell newspapers"], correct: 1 },
     { q: "What does a crown show?", a: ["You are rich", "You are tall", "You are royal and powerful", "You like gold"], correct: 2 }
   ],
-
   "Through the Ages": [
     { q: "What is prehistory?", a: ["A type of cave painting", "The time before people learned to talk", "The time before written records", "A story told by grandparents"], correct: 2 },
     { q: "What are the three main prehistoric ages called?", a: ["Old Age, Middle Age, New Age", "Stone Age, Bronze Age, Iron Age", "Cold Age, Fire Age, Water Age", "Cave Age, Stick Age, Rock Age"], correct: 1 },
@@ -90,30 +89,6 @@ const quizzes = {
     { q: "What game piece did the Indus Valley people invent?", a: ["Dominoes", "Dice", "Marbles", "Chess"], correct: 1 },
     { q: "Which civilisation had flushing toilets and drains?", a: ["Ancient Egypt", "Ancient Sumer", "Indus Valley", "Roman Empire"], correct: 2 }
   ],
-
-"Invasion": [
-    { q: "Who was the first King of all England?", a: ["Alfred the Great", "Athelstan", "Harold Godwinson", "William the Conqueror"], correct: 1 },
-    { q: "Which groups tried to invade England soon after the Romans left in AD 410?", a: ["Normans", "Picts and Scots", "French", "Anglo-Saxons"], correct: 1 },
-    { q: "Who invited Hengist and Horsa to England?", a: ["Alfred the Great", "Vortigern", "William the Conqueror", "Harold Godwinson"], correct: 1 },
-    { q: "What happened to many towns after the Romans left Britannia?", a: ["They became prosperous", "They fell into disrepair", "They were built into castles", "They expanded rapidly"], correct: 1 },
-    { q: "What did the Anglo-Saxons do when they arrived in England?", a: ["Formed an empire", "Established seven kingdoms", "Built large fortresses", "Settled peacefully"], correct: 1 },
-    { q: "What were the main Viking activities in England?", a: ["Farming and trading", "Raiding and conquering", "Building castles", "Teaching Christianity"], correct: 1 },
-    { q: "What role did monks like St Columba and St Augustine play in Anglo-Saxon England?", a: ["They led armies", "They converted people to Christianity", "They resisted Viking invasions", "They ruled the kingdoms"], correct: 1 },
-    { q: "Which of the following is NOT a legacy of the Anglo-Saxons?", a: ["The English language", "Christianity", "Democracy", "Place names"], correct: 2 },
-    { q: "What was the significance of monasteries in Anglo-Saxon England?", a: ["They were centers of learning and Christianity", "They served as military bases", "They were places for royal ceremonies", "They stored weapons"], correct: 0 },
-    { q: "What was Danegeld?", a: ["A tax paid to Vikings for peace", "A religious ceremony", "A Viking trading system", "A form of currency"], correct: 0 },
-    { q: "Who led the Vikings during the Battle of Edington?", a: ["Alfred the Great", "Guthrum", "Harald Hardrada", "William the Conqueror"], correct: 1 },
-    { q: "What year did the Viking raid on Lindisfarne take place?", a: ["AD 865", "AD 793", "AD 1066", "AD 871"], correct: 1 },
-    { q: "What was the Great Heathen Army?", a: ["A large Viking invasion force", "A Roman legion", "An Anglo-Saxon militia", "A Christian missionary group"], correct: 0 },
-    { q: "Who won the Battle of Hastings in 1066?", a: ["Harold Godwinson", "Harald Hardrada", "William the Conqueror", "Athelstan"], correct: 2 },
-    { q: "What was the main goal of William the Conqueror after winning the Battle of Hastings?", a: ["To unite England under Norman rule", "To destroy all Viking settlements", "To convert England to paganism", "To ally with the Scots"], correct: 0 },
-    { q: "What event marked the end of Viking and Anglo-Saxon rule in England?", a: ["William the Conqueror’s victory at Hastings", "Alfred the Great’s defense of Wessex", "The Battle of Stamford Bridge", "The unification of England under Athelstan"], correct: 0 },
-    { q: "Which battle did Harold Godwinson win before facing William at Hastings?", a: ["Battle of Stamford Bridge", "Battle of Edington", "Battle of Lindisfarne", "Battle of York"], correct: 0 },
-    { q: "What title did William take after winning the Battle of Hastings?", a: ["William the Victorious", "William the Conqueror", "King of Normandy", "William the Invincible"], correct: 1 },
-    { q: "What was the primary reason for the Viking raids on monasteries?", a: ["To gain wealth and resources", "To spread Christianity", "To build alliances", "To establish trade routes"], correct: 0 },
-    { q: "Which year marked the beginning of Norman rule in England?", a: ["1066", "865", "871", "924"], correct: 0 }
-  ],
-
   "Dynamic Dynasties": [
     { q: "What is a dynasty?", a: ["A group of soldiers", "A kind of Chinese house", "A family that rules for a long time", "A type of government official"], correct: 2 },
     { q: "Which dynasty is the earliest with recorded history in China?", a: ["Qin", "Zhou", "Shang", "Han"], correct: 2 },
@@ -207,123 +182,116 @@ const quizzes = {
   ]
 };
 
-// Initialize variables
-let currentQuiz = null;
+// Store name and class globally
+let studentName = "";
+let studentClass = "";
+
+const app = document.getElementById("app");
+const mainMenu = document.getElementById("main-menu");
+const quizScreen = document.getElementById("quiz-screen");
+const scoreScreen = document.getElementById("score-screen");
+const nameClassScreen = document.getElementById("name-class-screen");
+const quizList = document.getElementById("quiz-list");
+const quizTitle = document.getElementById("quiz-title");
+const questionText = document.getElementById("question-text");
+const answerButtons = document.getElementById("answer-buttons");
+const feedback = document.getElementById("feedback");
+const finalScore = document.getElementById("final-score");
+const retakeBtn = document.getElementById("retake-btn");
+const menuBtn = document.getElementById("menu-btn");
+const startBtn = document.getElementById("start-btn");
+const nameInput = document.getElementById("student-name");
+const classInput = document.getElementById("student-class");
+
+let currentQuiz = [];
+let currentTitle = "";
 let currentQuestion = 0;
 let score = 0;
 
-// Load all quizzes dynamically
-function loadQuizzes() {
-    const quizList = document.getElementById("quiz-list");
-    quizList.innerHTML = "";
-    try {
-        Object.keys(quizzes).forEach((quizName) => {
-            const button = document.createElement("button");
-            button.classList.add("quiz-button");
-            button.textContent = quizName;
-            button.onclick = () => startQuiz(quizName);
-            quizList.appendChild(button);
-        });
-        console.log("Loaded quizzes:", Object.keys(quizzes));
-    } catch (error) {
-        console.error("Error loading quizzes:", error);
-    }
+function showScreen(screen) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  screen.classList.remove("hidden");
 }
 
-// Start a selected quiz
-function startQuiz(name) {
-    currentQuiz = quizzes[name];
-    currentQuestion = 0;
-    score = 0;
-    document.getElementById("quiz-title").textContent = name;
-    document.getElementById("quiz-list").style.display = "none";
-    document.getElementById("quiz-container").style.display = "block";
-    document.getElementById("next-button").style.display = "block"; // Show next button initially
-    document.getElementById("back-button").style.display = "none"; // Hide back button initially
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("score").textContent = "";
-    updateProgress();
-    showQuestion();
+function loadMainMenu() {
+  quizList.innerHTML = "";
+  Object.keys(quizzes).forEach(title => {
+    const btn = document.createElement("button");
+    btn.textContent = title;
+    btn.setAttribute("type", "button");
+    btn.addEventListener("click", () => promptNameAndClass(title));
+    quizList.appendChild(btn);
+  });
+  showScreen(mainMenu);
 }
 
-// Display the current question and answers
+function promptNameAndClass(title) {
+  currentTitle = title;
+  showScreen(nameClassScreen);
+}
+
+startBtn.addEventListener("click", () => {
+  studentName = nameInput.value.trim();
+  studentClass = classInput.value.trim();
+  startQuiz(currentTitle);
+});
+
+function startQuiz(title) {
+  currentQuiz = quizzes[title];
+  currentTitle = title;
+  currentQuestion = 0;
+  score = 0;
+  quizTitle.textContent = title;
+  showScreen(quizScreen);
+  showQuestion();
+}
+
 function showQuestion() {
-    const questionObj = currentQuiz[currentQuestion];
-    document.getElementById("question").textContent = questionObj.q;
-    const answersDiv = document.getElementById("answers");
-    answersDiv.innerHTML = "";
+  const question = currentQuiz[currentQuestion];
+  questionText.textContent = question.q;
+  answerButtons.innerHTML = "";
+  feedback.classList.add("hidden");
 
-    questionObj.a.forEach((answer, index) => {
-        const button = document.createElement("button");
-        button.classList.add("answer-button");
-        button.textContent = answer;
-        button.onclick = () => checkAnswer(index, button);
-        answersDiv.appendChild(button);
-    });
-
-    updateProgress();
+  question.a.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+    btn.onclick = () => checkAnswer(index);
+    answerButtons.appendChild(btn);
+  });
 }
 
-// Check if the selected answer is correct
-function checkAnswer(selected, button) {
-    const correct = currentQuiz[currentQuestion].correct;
-    const feedback = document.getElementById("feedback");
-    const buttons = document.querySelectorAll("#answers button");
+function checkAnswer(selected) {
+  const correctIndex = currentQuiz[currentQuestion].correct;
+  feedback.classList.remove("hidden");
+  if (selected === correctIndex) {
+    feedback.textContent = "✅ Correct!";
+    score++;
+  } else {
+    feedback.textContent = `❌ Wrong! The correct answer was: ${currentQuiz[currentQuestion].a[correctIndex]}`;
+  }
 
-    buttons.forEach((btn, index) => {
-        btn.disabled = true;
-        if (index === correct) {
-            btn.classList.add("correct");
-        } else if (index === selected) {
-            btn.classList.add("incorrect");
-        }
-    });
-
-    if (selected === correct) {
-        score++;
-        feedback.textContent = "Correct!";
-    } else {
-        feedback.textContent = `Wrong! Correct answer: ${currentQuiz[currentQuestion].a[correct]}`;
-    }
-
-    updateProgress();
-}
-
-// Move to the next question or end the quiz
-function nextQuestion() {
+  setTimeout(() => {
     currentQuestion++;
-    const feedback = document.getElementById("feedback");
-
     if (currentQuestion < currentQuiz.length) {
-        feedback.textContent = "";
-        showQuestion();
+      showQuestion();
     } else {
-        feedback.textContent = "";
-        if (score === currentQuiz.length) {
-            document.getElementById("score").textContent = `Perfect! You scored ${score} / ${currentQuiz.length}! 🎉`;
-        } else {
-            document.getElementById("score").textContent = `Your score: ${score} / ${currentQuiz.length}`;
-        }
-        document.getElementById("next-button").style.display = "none";  // Hide next button at the end
-        document.getElementById("back-button").style.display = "block"; // Show back button at the end
+      showFinalScore();
     }
+  }, 2000);
 }
 
-// Return to the main menu
-function backToMainMenu() {
-    document.getElementById("quiz-container").style.display = "none";
-    document.getElementById("quiz-list").style.display = "block";
-    document.getElementById("score").textContent = "";
-    document.getElementById("feedback").textContent = "";
-    loadQuizzes();
+function showFinalScore() {
+  let nameClassDisplay = "";
+  if (studentName) nameClassDisplay += `Name: ${studentName} `;
+  if (studentClass) nameClassDisplay += `Class: ${studentClass}`;
+  finalScore.textContent = `${nameClassDisplay}\nYou scored ${score} out of ${currentQuiz.length}!`;
+  showScreen(scoreScreen);
 }
 
-// Update the progress bar
-function updateProgress() {
-    const progress = ((currentQuestion) / currentQuiz.length) * 100;
-    const progressBar = document.getElementById("progress-bar");
-    progressBar.style.width = progress + "%";
-}
+retakeBtn.addEventListener("click", () => startQuiz(currentTitle));
+menuBtn.addEventListener("click", loadMainMenu);
 
-// Load quizzes on page load
-window.onload = loadQuizzes;
+// Load the quiz menu right after the page finishes loading
+window.onload = function () {
+  loadMainMenu();
+};
