@@ -227,6 +227,7 @@ function loadMainMenu() {
 
 function promptNameAndClass(title) {
   currentTitle = title;
+  // Show the name and class entry screen after clicking a quiz
   showScreen(nameClassScreen);
 }
 
