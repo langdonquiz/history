@@ -209,7 +209,9 @@ let currentQuestion = 0;
 let score = 0;
 
 function showScreen(screen) {
+  // Hide all screens
   document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  // Show the selected screen
   screen.classList.remove("hidden");
 }
 
@@ -222,11 +224,14 @@ function loadMainMenu() {
     btn.addEventListener("click", () => promptNameAndClass(title));
     quizList.appendChild(btn);
   });
-  showScreen(mainMenu);
+  showScreen(mainMenu); // Always start with the main menu
 }
 
 function promptNameAndClass(title) {
   currentTitle = title;
+  // Clear any previous input
+  nameInput.value = "";
+  classInput.value = "";
   // Show the name and class entry screen after clicking a quiz
   showScreen(nameClassScreen);
 }
@@ -278,7 +283,7 @@ function checkAnswer(selected) {
     } else {
       showFinalScore();
     }
-  }, 2000);
+  }, 1500);
 }
 
 function showFinalScore() {
@@ -292,7 +297,7 @@ function showFinalScore() {
 retakeBtn.addEventListener("click", () => startQuiz(currentTitle));
 menuBtn.addEventListener("click", loadMainMenu);
 
-// Load the quiz menu right after the page finishes loading
+// Load the main menu immediately after the page loads
 window.onload = function () {
   loadMainMenu();
 };
