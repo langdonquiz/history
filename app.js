@@ -214,14 +214,15 @@ function sendDataToGoogleSheets(name, className, quizName, score) {
   fetch(apiUrl, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ name, class: className, quizName, score }),
+    body: JSON.stringify({ name, class: className, quizName, score })
   })
   .then(response => response.json())
   .then(data => console.log("Data sent successfully:", data))
   .catch(error => console.error("Error sending data:", error));
 }
+
 
 function showScreen(screen) {
   // Hide all screens
