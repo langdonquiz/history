@@ -210,7 +210,7 @@ let score = 0;
 
 // Send data to Google Sheets
 function sendDataToGoogleSheets(name, className, quizName, score) {
-  const apiUrl = "https://script.google.com/macros/s/AKfycbz1qk6WRp1giuIhSP3pPPEsKij-zptFMfYvmxEt9rtiGUqDgHHyTIXf-AFSv1UdToTy/exec";
+  const apiUrl = "https://tranquil-jagged-yew.glitch.me/send-data";
   fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -222,6 +222,7 @@ function sendDataToGoogleSheets(name, className, quizName, score) {
   .then(data => console.log("Data sent successfully:", data))
   .catch(error => console.error("Error sending data:", error));
 }
+
 
 
 function showScreen(screen) {
