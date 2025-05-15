@@ -1,3 +1,18 @@
+/* Hide all screens by default */
+.screen {
+    display: none;
+}
+
+/* Show the current screen only */
+.screen:not(.hidden) {
+    display: block;
+}
+
+/* Style for the main menu to always be visible initially */
+#main-menu {
+    display: block;
+}
+
 /* style.css */
 body {
     font-family: Arial, sans-serif;
