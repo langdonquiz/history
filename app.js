@@ -208,6 +208,21 @@ let currentTitle = "";
 let currentQuestion = 0;
 let score = 0;
 
+// Send data to Google Sheets
+function sendDataToGoogleSheets(name, className, quizName, score) {
+  const apiUrl = "https://script.google.com/macros/s/AKfycbz1qk6WRp1giuIhSP3pPPEsKij-zptFMfYvmxEt9rtiGUqDgHHyTIXf-AFSv1UdToTy/exec";
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, class: className, quizName, score }),
+  })
+  .then(response => response.json())
+  .then(data => console.log("Data sent successfully:", data))
+  .catch(error => console.error("Error sending data:", error));
+}
+
 function showScreen(screen) {
   // Hide all screens
   document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
@@ -291,6 +306,10 @@ function showFinalScore() {
   if (studentName) nameClassDisplay += `Name: ${studentName} `;
   if (studentClass) nameClassDisplay += `Class: ${studentClass}`;
   finalScore.textContent = `${nameClassDisplay}\nYou scored ${score} out of ${currentQuiz.length}!`;
+
+  // Send data to Google Sheets
+  sendDataToGoogleSheets(studentName, studentClass, currentTitle, score);
+
   showScreen(scoreScreen);
 }
 
